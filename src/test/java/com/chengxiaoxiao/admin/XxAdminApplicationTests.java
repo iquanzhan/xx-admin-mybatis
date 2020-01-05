@@ -1,4 +1,4 @@
-package com.chengxiaoxiao;
+package com.chengxiaoxiao.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
