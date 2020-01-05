@@ -1,6 +1,6 @@
 package com.chengxiaoxiao.admin.service;
 
-import com.chengxiaoxiao.admin.dao.UserDao;
+import com.chengxiaoxiao.admin.dao.UserMapper;
 import com.chengxiaoxiao.admin.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserDao userDao;
+    private UserMapper userMapper;
 
     public List<User> getUserInfo(){
-        return userDao.getAll();
+        return userMapper.getAll();
     }
 }

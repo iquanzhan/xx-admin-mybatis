@@ -129,19 +129,30 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- mybatis generator 自动生成代码插件 -->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.3.2</version>
                 <configuration>
-                    <!-- 扫描resources/generator目录下的generatorConfig.xml配置 -->
-                    <configurationFile>
-                        ${basedir}/src/main/resources/generator/generatorConfig.xml
-                    </configurationFile>
-                    <overwrite>true</overwrite>
+                    <configurationFile>src/main/resources/mybatis-generator/generatorConfig.xml</configurationFile>
                     <verbose>true</verbose>
+                    <overwrite>true</overwrite>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>Generate MyBatis Artifacts</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-core</artifactId>
+                        <version>1.3.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
