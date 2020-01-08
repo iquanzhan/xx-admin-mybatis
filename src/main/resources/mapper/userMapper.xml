@@ -3,7 +3,7 @@
 <mapper namespace="com.chengxiaoxiao.admin.dao.UserMapper">
 
     <select id="getAll" resultType="user">
-        select * from user
+        select * from tb_user
     </select>
 
 </mapper>
