@@ -1,18 +1,22 @@
-package com.chengxiaoxiao.server;
+package com.chengxiaoxiao.web;
 
-import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * 启动类
+ *
  * @Author: Cheng XiaoXiao  (🍊 ^_^ ^_^)
- * @Date: 2020/1/22 12:05 上午
+ * @Date: 2020/1/21 9:40 下午
  * @Description:
  */
+@EnableSwagger2
 @SpringBootApplication
-@EnableAdminServer
-public class AdminServerApplication {
+@EntityScan("com.chengxiaoxiao.model")
+public class MainApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AdminServerApplication.class,args);
+        SpringApplication.run(MainApplication.class, args);
     }
 }
