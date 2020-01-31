@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>admin-common</artifactId>
-<<<<<<< HEAD
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -27,16 +25,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!--fastjson-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
     </dependencies>
-=======
-
->>>>>>> 4778c58... [admin模块]整合spring-boot-admin完毕
 
 </project>

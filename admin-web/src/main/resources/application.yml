@@ -1,6 +1,11 @@
 server:
+<<<<<<< HEAD
   port: 10080
 # druid Á¬½Ó³ØÅäÖÃ
+=======
+  port: 18000
+# druid è¿æ¥æ± é…ç½®
+>>>>>>> 8465fe6... [æ¶æ„é‡æ„]è°ƒæ•´ç»“æ„
 spring:
   application:
     name: admin-user

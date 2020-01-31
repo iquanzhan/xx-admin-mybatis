@@ -1,8 +1,5 @@
 package com.chengxiaoxiao.common.jwt;
 
-import lombok.Data;
-import org.apache.tomcat.util.http.parser.Authorization;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Date;
@@ -20,14 +17,28 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2020/1/31 8:32 下午
  * @Description:
  */
-@Data
+@Configuration
+@ConfigurationProperties(prefix = "jwt.config")
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private String key;
+    private long ttl;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public long getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(long ttl) {
+        this.ttl = ttl;
+    }
 
     /**
      * 生成JWT
@@ -42,9 +53,9 @@ public class JwtUtil {
         JwtBuilder builder = Jwts.builder().setId(id)
                 .setSubject(subject)
                 .setIssuedAt(now)
-                .signWith(SignatureAlgorithm.HS256, secret).claim("roles", roles);
-        if (expiration > 0) {
-            builder.setExpiration(new Date(nowMillis + expiration));
+                .signWith(SignatureAlgorithm.HS256, key).claim("roles", roles);
+        if (ttl > 0) {
+            builder.setExpiration(new Date(nowMillis + ttl));
         }
         return builder.compact();
     }
@@ -57,7 +68,7 @@ public class JwtUtil {
      */
     public Claims parseJWT(String jwtStr) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(key)
                 .parseClaimsJws(jwtStr)
                 .getBody();
     }
