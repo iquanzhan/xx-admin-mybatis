@@ -26,19 +26,12 @@ public class Result<T> implements Serializable {
     private T data;
 
     private Result(T data) {
-        this.code = 0;
-        this.msg = "请求成功";
         this.data = data;
     }
 
     //成功时的回调
     public static <T> Result<T> success(T data) {
         return new Result<>(data);
-    }
-
-    //成功时的回调
-    public static <T> Result<T> success(CodeMsg codeMsg) {
-        return new Result<>(codeMsg.getCode(), codeMsg.getMsg(), null);
     }
 
     private Result(CodeMsg cm) {
