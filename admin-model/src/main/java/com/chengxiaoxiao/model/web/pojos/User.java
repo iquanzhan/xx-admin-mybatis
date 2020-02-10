@@ -66,6 +66,7 @@ public class User implements Serializable {
 
     @NotNull(message = "请输入正确的性别信息")
     @ApiModelProperty(value = "是否锁定", required = true)
+    @Column(name="isLocked")
     private Integer locked;
 
     @NotNull
@@ -76,13 +77,19 @@ public class User implements Serializable {
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
+    /** 创建人 */
+    private String createdUser ;
+
     @NotNull
     @ApiModelProperty(value = "创建时间", required = true)
-    private String createTime;
+    private Date createTime;
+
+    /** 更新人 */
+    private String updatedUser ;
 
     @NotNull
     @ApiModelProperty(value = "修改时间", required = true)
-    private String UpdateTime;
+    private Date UpdateTime;
 
     @NotNull
     @ApiModelProperty(value = "删除状态", required = true)
