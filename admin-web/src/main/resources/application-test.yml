@@ -69,6 +69,13 @@ mybatis:
   mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.chengxiaoxiao.model.web.pojos  # 注意：对应实体类的路径
 
+logging:
+  level:
+    com:
+      chengxiaoxiao:
+        model:
+          mappers: debug
+
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql
