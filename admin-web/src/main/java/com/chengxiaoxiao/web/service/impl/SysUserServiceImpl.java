@@ -2,6 +2,7 @@ package com.chengxiaoxiao.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.chengxiaoxiao.common.config.JwtConfig;
 import com.chengxiaoxiao.common.jwt.JwtUtil;
 import com.chengxiaoxiao.common.utils.IdWorker;
 import com.chengxiaoxiao.common.utils.ResultUtil;
@@ -13,6 +14,8 @@ import com.chengxiaoxiao.model.web.dtos.UserEntitySecurity;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysLoginModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserSearchDto;
+import com.chengxiaoxiao.model.web.dtos.result.SysRoleSimpleDtos;
+import com.chengxiaoxiao.model.web.dtos.result.UserInfoRolesDto;
 import com.chengxiaoxiao.model.web.pojos.SysUser;
 import com.chengxiaoxiao.model.repository.SysUserRepository;
 import com.chengxiaoxiao.model.web.pojos.SysUserRole;
@@ -20,6 +23,8 @@ import com.chengxiaoxiao.web.exception.GlobleException;
 import com.chengxiaoxiao.web.service.SysRoleService;
 import com.chengxiaoxiao.web.service.SysUserRoleService;
 import com.chengxiaoxiao.web.service.SysUserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,6 +68,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String> impleme
     BCryptPasswordEncoder encoder;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private JwtConfig jwtConfig;
 
     @Override
     public BaseDao<SysUser, String> getBaseDao() {
@@ -195,5 +202,30 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String> impleme
     @Override
     public SysUser selectUserByName(String username) {
         return sysUserRepository.findByUserName(username);
+    }
+
+    @Override
+    public UserInfoRolesDto loadUserInfoBytoken(String token) {
+        try {
+            // 截取JWT前缀
+            token = token.replace(jwtConfig.getTokenPrefix(), "");
+            Claims claims = jwtUtil.parseJWT(token);
+            String userId = claims.getId();
+
+            Optional<SysUser> userInfo = sysUserRepository.findById(userId);
+            if (!userInfo.isPresent()) {
+                return null;
+            }
+
+            SysUser sysUser = userInfo.get();
+            UserInfoRolesDto userInfoRolesDto = new UserInfoRolesDto();
+            BeanUtil.copyProperties(sysUser,userInfoRolesDto,CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+            userInfoRolesDto.setRoles(sysRoleService.getRolesByUserId(sysUser.getId()));
+
+            return userInfoRolesDto;
+
+        } catch (ExpiredJwtException e) {
+            throw new GlobleException(CodeMsg.AUTHENTICATION_TOKEN_EXPIRED);
+        }
     }
 }

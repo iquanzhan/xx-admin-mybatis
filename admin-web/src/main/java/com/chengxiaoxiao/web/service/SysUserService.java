@@ -1,10 +1,12 @@
 package com.chengxiaoxiao.web.service;
 
 
+import com.chengxiaoxiao.model.common.dtos.result.Result;
 import com.chengxiaoxiao.model.web.dtos.UserEntitySecurity;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysLoginModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserSearchDto;
+import com.chengxiaoxiao.model.web.dtos.result.UserInfoRolesDto;
 import com.chengxiaoxiao.model.web.pojos.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -71,8 +73,17 @@ public interface SysUserService extends BaseService<SysUser, String> {
 
     /**
      * 根据用户名查询，反悔security类
+     *
      * @param username
      * @return
      */
     SysUser selectUserByName(String username);
+
+    /**
+     * 根据TOKEN获取用户信息
+     *
+     * @param token
+     * @return
+     */
+    UserInfoRolesDto loadUserInfoBytoken(String token);
 }

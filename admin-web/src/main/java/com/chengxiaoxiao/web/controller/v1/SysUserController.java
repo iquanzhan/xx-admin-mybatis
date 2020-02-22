@@ -1,6 +1,7 @@
 package com.chengxiaoxiao.web.controller.v1;
 
 import com.chengxiaoxiao.api.user.SysUserControllerApi;
+import com.chengxiaoxiao.common.config.JwtConfig;
 import com.chengxiaoxiao.model.common.dtos.query.PageQueryDtos;
 import com.chengxiaoxiao.model.common.dtos.result.PageResult;
 import com.chengxiaoxiao.model.common.dtos.result.Result;
@@ -8,6 +9,7 @@ import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysLoginModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserModelDto;
 import com.chengxiaoxiao.model.web.dtos.query.sysuser.SysUserSearchDto;
 import com.chengxiaoxiao.model.web.dtos.result.SysRoleSimpleDtos;
+import com.chengxiaoxiao.model.web.dtos.result.UserInfoRolesDto;
 import com.chengxiaoxiao.model.web.pojos.SysUser;
 import com.chengxiaoxiao.web.controller.BaseController;
 import com.chengxiaoxiao.web.service.SysRoleService;
@@ -35,6 +37,8 @@ public class SysUserController extends BaseController implements SysUserControll
     SysUserService sysUserService;
     @Autowired
     SysRoleService sysRoleService;
+    @Autowired
+    JwtConfig jwtConfig;
 
     @Override
     @GetMapping("/{id}")
@@ -91,8 +95,14 @@ public class SysUserController extends BaseController implements SysUserControll
     @Override
     @PostMapping("/role/{userId}")
     public Result dispatchRoleByUserId(@PathVariable @NotNull(message = "用户ID不允许为空") String userId, @RequestBody @NotNull(message = "角色ID数组不能为空") String[] roldIds) {
-        sysRoleService.dispatchRoleByUserId(userId,roldIds);
+        sysRoleService.dispatchRoleByUserId(userId, roldIds);
         return Result.success(null);
+    }
+
+    @Override
+    @GetMapping("/info")
+    public Result<UserInfoRolesDto> info() {
+        return Result.success(sysUserService.loadUserInfoBytoken(request.getHeader(jwtConfig.getTokenHeader())));
     }
 
 
